@@ -1,0 +1,66 @@
+body, html {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    background-image: url('assets/background.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+.task-bar {
+    margin: 0;
+    width: 100%;
+    height: 40px; 
+    background-color: rgba(26, 26, 26, 0.9);
+    box-sizing: border-box;
+}
+
+.task-bar ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.task-bar li {
+    height: 100%;
+}
+
+.task-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin: 0 4px; 
+    border-radius: 4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 100%; 
+    box-sizing: border-box;
+    padding: 6px; 
+}
+
+.task-button img {
+    height: 100%; 
+    width: auto; 
+}
+
+.task-divider {
+    width: auto;
+    margin: 0 4px;
+    flex-shrink: 0;
+    height: 28px;
+    margin-top: 6px;
+}
+
+.task-button:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
