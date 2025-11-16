@@ -100,7 +100,7 @@ body {
 }
 
 .title-text {
-    color: white;
+    color: #EEE8D5;
     font-family: Arial, sans-serif;
     font-weight: bold;
     position: absolute;
@@ -141,6 +141,7 @@ body {
 
 .window.minimized {
     height: 30px !important;
+    border-radius: 15px 15px 0 0 !important;
 }
 
 .window.minimized .window-content {
@@ -148,10 +149,73 @@ body {
 }
 
 #home-window .window-content {
-    color: #ffffff; 
+    color: #EEE8D5; 
     font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+#home-window.minimized .window-content {
+    display: none;
+}
+
+#links-window {
+    border: none;
+    background: #1a1a1a;
+    width: 442px;
+    height: 374px;
+    border-radius: 15px;
+}
+
+#links-window .title-bar {
+    background: #1a1a1a;
+}
+
+#links-window .title-text {
+    color: #EEE8D5;
+}
+
+#links-window .window-content {
+    color: #EEE8D5; 
+    font-family: 'Courier New', Courier, monospace;
+    background: rgba(10, 14, 20, 0.95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.links-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 39px 39px;
+    justify-items: center;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+}
+
+.link-button {
+    background: none;
+    border: none;
+    color: #EEE8D5;
+    cursor: pointer;
+    padding: 0;
+    transition: opacity 0.2s ease;
+}
+
+.link-button:hover {
+    opacity: 0.8;
+}
+
+.link-button img {
+    width: 84.5px; 
+    height: 79px;
+}
+
+#links-window.minimized .window-content {
+    display: none;
 }

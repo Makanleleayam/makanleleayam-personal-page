@@ -30,45 +30,87 @@
                     <img src="assets/terminal.svg" alt="terminal">
                 </button>
             </li>
+            <li>
+                <button class="task-button links">
+                    <img src="assets/links.png" alt="links">
+                </button>
+            </li>
         </ul> 
     </div>
 
     <div class="window" id="terminal-window">
+        <div class="title-bar">
+            <span class="title-text">char@kali - about</span>
+            <div class="controls">
+                <button class="control-btn minimize">-</button>
+                <button class="control-btn maximize">□</button>
+                <button class="control-btn close">x</button>
+            </div>
+        </div>
     
-    <div class="title-bar">
-        <span class="title-text">char@kali - about</span>
-        <div class="controls">
-            <button class="control-btn minimize">-</button>
-            <button class="control-btn maximize">□</button>
-            <button class="control-btn close">x</button>
+        <div class="window-content">
+            <p></p>
+            <p>izitchar@kali:~$ <span>_</span></p>
         </div>
     </div>
-    
-    <div class="window-content">
-        <p>izitchar@kali:~$ <span>_</span></p>
+
+    <div class="window show" id="home-window">    
+        <div class="title-bar">
+            <span class="title-text">char@kali - README.md</span>
+            <div class="controls">
+                <button class="control-btn minimize">-</button>
+                <button class="control-btn maximize">□</button>
+                <button class="control-btn close">x</button>
+            </div>
         </div>
-
-</div>
-
-<div class="window show" id="home-window">
-    
-    <div class="title-bar">
-        <span class="title-text">char@kali - README.md</span>
-        <div class="controls">
-            <button class="control-btn minimize">-</button>
-            <button class="control-btn maximize">□</button>
-            <button class="control-btn close">x</button>
+        
+        <div class="window-content">
+            <p>Welcome to my Home folder!</p>
+            <p>Hellooo, i'm izitchar</p>
+            <img src="assets/pfp.png" alt="profle">
+            <p>currently majoring in Cybersecurity at Binus University</p>
         </div>
     </div>
-    
-    <div class="window-content">
-        <p>Welcome to my Home folder!</p>
-        <p>Hellooo, i'm izitchar</p>
-        <img src="assets/pfp.png" alt="profle">
-        <p>currently majoring in Cybersecurity at Binus University</p>
+
+    <div class="window" id="links-window">
+        
+        <div class="title-bar">
+            <span class="title-text">char@kali - links</span>
+            <div class="controls">
+                <button class="control-btn minimize">-</button>
+                <button class="control-btn maximize">□</button>
+                <button class="control-btn close">x</button>
+            </div>
+        </div>
+        
+        <div class="window-content">
+           <div class="links-grid">
+
+            <button class="link-button" onclick="window.open('https://instagram.com/charis_surijakko', '_blank')">
+                <img src="assets/instagram.svg" alt="Instagram @charis_surijakko">
+            </button>
+
+            <button class="link-button" onclick="window.open('https://open.spotify.com/user/21vpt5kbpkgvtr7jlbm5nkapq?si=BJa9nuJdRzO6Yxm4xMyQfQ', '_blank')">
+                <img src="assets/spotify.svg" alt="Spotify">
+            </button>
+
+            <button class="link-button" onclick="window.open('https://github.com/izitChar', '_blank')">
+                <img src="assets/github.svg" alt="GitHub izitChar">
+            </button>
+
+            <button class="link-button" onclick="window.open('https://discord.com/users/anjaayaa', '_blank')">
+                <img src="assets/discord.svg" alt="Discord anjaayaa">
+            </button>
+
+            <button class="link-button" onclick="window.open('https://tiktok.com/@typechar0', '_blank')">
+                <img src="assets/tiktok.svg" alt="TikTok @typechar0">
+            </button>
+
+            </div>
+        </div>
     </div>
 
-</div>
+    
 
     <script src="script.js"></script>
 </body>

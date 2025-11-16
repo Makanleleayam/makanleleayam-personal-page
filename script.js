@@ -1,16 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
-
+    //terminal event listeners
     const terminalButton = document.querySelector('.task-button.terminal');
     const terminalWindow = document.querySelector('#terminal-window');
     const terminalCloseBtn = terminalWindow.querySelector('.control-btn.close');
     const terminalMinimizeBtn = terminalWindow.querySelector('.control-btn.minimize');
     const terminalMaximizeBtn = terminalWindow.querySelector('.control-btn.maximize');
 
+    //home event listeners
     const homeButton = document.querySelector('.task-button.home');
     const homeWindow = document.querySelector('#home-window');
     const homeCloseBtn = homeWindow.querySelector('.control-btn.close');
     const homeMinimizeBtn = homeWindow.querySelector('.control-btn.minimize');
     const homeMaximizeBtn = homeWindow.querySelector('.control-btn.maximize');
+
+    //links event listeners
+    const linksButton = document.querySelector('.task-button.links');
+    const linksWindow = document.querySelector('#links-window');
+    const linksCloseBtn = linksWindow.querySelector('.control-btn.close');
+    const linksMinimizeBtn = linksWindow.querySelector('.control-btn.minimize');
+    const linksMaximizeBtn = linksWindow.querySelector('.control-btn.maximize');
 
     terminalButton.addEventListener('click', () => {
         terminalWindow.classList.toggle('show');
@@ -42,8 +50,24 @@ document.addEventListener('DOMContentLoaded', () => {
         handleMaximize(homeWindow);
     });
 
+    linksButton.addEventListener('click', () => {
+        linksWindow.classList.toggle('show');
+    });
+    linksCloseBtn.addEventListener('click', () => {
+        linksWindow.classList.remove('show');
+    });
+    linksMinimizeBtn.addEventListener('click', () => {
+        if (linksWindow.classList.contains('maximized')) return;
+        linksWindow.classList.toggle('minimized');
+    });
+    linksMaximizeBtn.addEventListener('click', () => {
+        if (linksWindow.classList.contains('minimized')) return;
+        handleMaximize(linksWindow);
+    });
+
     makeDraggable(terminalWindow);
     makeDraggable(homeWindow);
+    makeDraggable(linksWindow);
 });
 
 function handleMaximize(windowElement) {
