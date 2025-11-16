@@ -149,7 +149,6 @@ body {
 }
 
 /*terminal*/
-
 #terminal-window {
     top: 120px;
     left: 200px;
@@ -294,4 +293,62 @@ body {
 
 #links-window.minimized .window-content {
     display: none;
+}
+
+
+
+
+/* compatibility other devices*/
+@media (max-width: 800px) {
+    
+    .task-bar {
+        display: none;
+    }
+
+    .window {
+        display: none !important;
+    }
+
+    body {
+        overflow-y: auto;
+        height: auto;
+    }
+
+    #links-window {
+        display: flex !important;
+        flex-direction: column;
+        position: static !important;
+        width: 100% !important;
+        height: 100vh !important;
+        min-height: 100vh;
+        border: none !important;
+        border-radius: 0 !important;
+        background: #1a1a1a !important;
+        box-shadow: none !important;
+    }
+
+    #links-window .title-bar {
+        display: none;
+    }
+
+    #links-window .window-content {
+        flex-grow: 1;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 20px;
+    }
+
+    .links-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        max-width: 400px;
+    }
+
+    .link-button img {
+        width: 100%;
+        height: auto;
+    }
 }
