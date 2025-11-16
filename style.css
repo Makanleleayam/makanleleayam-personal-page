@@ -9,6 +9,7 @@ body {
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
+    overflow: hidden;
 }
 
 .task-bar {
@@ -30,6 +31,8 @@ body {
 
 .task-bar li {
     height: 100%;
+    display: flex;
+    align-items: center;
 }
 
 .task-button {
@@ -38,11 +41,9 @@ body {
     cursor: pointer;
     margin: 0 4px; 
     border-radius: 4px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     height: 100%; 
     box-sizing: border-box;
     padding: 6px; 
@@ -58,9 +59,99 @@ body {
     margin: 0 4px;
     flex-shrink: 0;
     height: 28px;
-    margin-top: 6px;
 }
 
 .task-button:hover {
     background-color: rgba(255, 255, 255, 0.15);
+}
+
+.window {
+    width: 600px;
+    height: 400px;
+    position: absolute;
+    top: 100px;
+    left: 150px;
+    background: #2b2b2b;
+    border: 1px solid #555;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    display: none;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.window.show {
+    display: flex;
+    flex-direction: column;
+}
+
+.title-bar {
+    width: 100%;
+    height: 30px;
+    background: #1a1a1a;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0 10px;
+    position: relative; 
+}
+
+.title-text {
+    color: white;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.controls .control-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0 5px;
+}
+
+.control-btn.close:hover {
+    background: #e81123;
+}
+
+.window-content {
+    flex-grow: 1;
+    padding: 15px;
+    color: #00ff00;
+    font-family: 'Courier New', Courier, monospace;
+    background: rgba(10, 14, 20, 0.95);
+}
+
+.window.maximized {
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    border-radius: 0;
+    border: none;
+}
+
+.window.minimized {
+    height: 30px !important;
+}
+
+.window.minimized .window-content {
+    display: none;
+}
+
+#home-window .window-content {
+    color: #ffffff; 
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
