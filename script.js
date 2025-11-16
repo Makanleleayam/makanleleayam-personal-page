@@ -20,6 +20,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const linksMinimizeBtn = linksWindow.querySelector('.control-btn.minimize');
     const linksMaximizeBtn = linksWindow.querySelector('.control-btn.maximize');
 
+    const projectButton = document.querySelector('.task-button.project');
+    const projectWindow = document.querySelector('#project-window');
+    const projectCloseBtn = projectWindow.querySelector('.control-btn.close');
+    const projectMinimizeBtn = projectWindow.querySelector('.control-btn.minimize');
+    const projectMaximizeBtn = projectWindow.querySelector('.control-btn.maximize');
+
     terminalButton.addEventListener('click', () => {
         terminalWindow.classList.toggle('show');
         if (terminalWindow.classList.contains('show')) {
@@ -75,9 +81,28 @@ document.addEventListener('DOMContentLoaded', () => {
         handleMaximize(linksWindow);
     });
 
+    projectButton.addEventListener('click', () => {
+        projectWindow.classList.toggle('show');
+        if (projectWindow.classList.contains('show')) {
+            bringToFront(projectWindow);
+        }
+    });
+    projectCloseBtn.addEventListener('click', () => {
+        projectWindow.classList.remove('show');
+    });
+    projectMinimizeBtn.addEventListener('click', () => {
+        if (projectWindow.classList.contains('maximized')) return;
+        projectWindow.classList.toggle('minimized');
+    });
+    projectMaximizeBtn.addEventListener('click', () => {
+        if (projectWindow.classList.contains('minimized')) return;
+        handleMaximize(projectWindow);
+    });
+
     makeDraggable(terminalWindow);
     makeDraggable(homeWindow);
     makeDraggable(linksWindow);
+    makeDraggable(projectWindow);
 
     terminalWindow.addEventListener('mousedown', () => {
         bringToFront(terminalWindow);
@@ -87,6 +112,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     linksWindow.addEventListener('mousedown', () => {
         bringToFront(linksWindow);
+    });
+    projectWindow.addEventListener('mousedown', () => {
+        bringToFront(projectWindow);
     });
 
     const welcomeMessage = document.createElement('p');
@@ -232,7 +260,7 @@ function handleMaximize(windowElement) {
         windowElement.dataset.left = rect.left + 'px';
 
         windowElement.style.width = '100vw';
-        windowElement.style.height = '100vh';
+        windowElement.style.height = '1TwoVH';
         windowElement.style.top = '0px';
         windowElement.style.left = '0px';
         windowElement.classList.add('maximized');
