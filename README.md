@@ -11,7 +11,7 @@ Welcome to my personal corner on the web, here's a little more about me, and my 
 - Passionate about security, technology, and exploring the hacking mindset (in a good way!)
 
 ## 💻 My Setup Vibes
-![Alt text](assets\Screenshot 2025-11-16 220504.png?raw=true "Optional Title")
+![Alt text](/assets/Screenshot%202025-11-16%20220504.png?raw=true "Optional Title")
 I style my page like a **terminal / command-line interface**, taking heavy **reference from Kali Linux’s aesthetic** the clean layout, hacker atmosphere, and minimal interface.
 
 The **logo and color scheme**, however, are my own, based on my personal brand and custom design.  
