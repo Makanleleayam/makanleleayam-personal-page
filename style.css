@@ -148,6 +148,81 @@ body {
     display: none;
 }
 
+/*terminal*/
+
+#terminal-window {
+    top: 120px;
+    left: 200px;
+}
+
+#terminal-window .window-content {
+    background: rgba(10, 14, 20, 0.95);
+    color: #EEE8D5;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 10px;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+#terminal-content p {
+    margin: 0;
+    line-height: 1.4;
+    white-space: pre-wrap;
+}
+
+#terminal-content div.log,
+.terminal-line {
+    display: flex;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.prompt {
+    color: #EEE8D5;
+    margin-right: 8px;
+    white-space: pre;
+}
+
+.command-log {
+    color: #EEE8D5;
+    white-space: pre-wrap;
+}
+
+.terminal-input {
+    background: transparent;
+    border: none;
+    color: #EEE8D5;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1em;
+    flex-grow: 1;
+    outline: none;
+    padding: 0;
+}
+
+/* --- Custom Scrollbar Styles --- */
+#terminal-window .window-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+#terminal-window .window-content::-webkit-scrollbar-track {
+    background: #1a1a1a;
+}
+
+#terminal-window .window-content::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 4px;
+}
+
+#terminal-window .window-content::-webkit-scrollbar-thumb:hover {
+    background: #777;
+}
+
+#terminal-window .window-content {
+    scrollbar-width: thin;
+    scrollbar-color: #555 #1a1a1a;
+}
+
+/*home*/
 #home-window .window-content {
     color: #EEE8D5; 
     font-family: Arial, sans-serif;
@@ -161,6 +236,7 @@ body {
     display: none;
 }
 
+/*links*/
 #links-window {
     border: none;
     background: #1a1a1a;
