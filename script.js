@@ -1,20 +1,24 @@
 let currentZIndex = 101;
+let isMuted = false;
 const clickSound = new Audio('assets/zapsplat_multimedia_button_click_bright_002_92099.mp3');
 clickSound.volume = 0.5; 
 const closeSound = new Audio('assets/zapsplat_multimedia_button_click_fast_short_001_79285.mp3');
 closeSound.volume = 0.5;
 
 function playClickSound() {
+    if (isMuted) return;
     clickSound.currentTime = 0;
     clickSound.play();
 }
 
 function playCloseSound() {
+    if (isMuted) return;
     closeSound.currentTime = 0;
     closeSound.play();
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+
     const terminalButton = document.querySelector('.task-button.terminal');
     const terminalWindow = document.querySelector('#terminal-window');
     const terminalCloseBtn = terminalWindow.querySelector('.control-btn.close');
@@ -27,18 +31,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const homeCloseBtn = homeWindow.querySelector('.control-btn.close');
     const homeMinimizeBtn = homeWindow.querySelector('.control-btn.minimize');
     const homeMaximizeBtn = homeWindow.querySelector('.control-btn.maximize');
+    const homeContent = homeWindow.querySelector('.window-content');
 
     const linksButton = document.querySelector('.task-button.links');
     const linksWindow = document.querySelector('#links-window');
     const linksCloseBtn = linksWindow.querySelector('.control-btn.close');
     const linksMinimizeBtn = linksWindow.querySelector('.control-btn.minimize');
     const linksMaximizeBtn = linksWindow.querySelector('.control-btn.maximize');
+    const linksContent = linksWindow.querySelector('.window-content');
 
     const projectButton = document.querySelector('.task-button.project');
     const projectWindow = document.querySelector('#project-window');
     const projectCloseBtn = projectWindow.querySelector('.control-btn.close');
     const projectMinimizeBtn = projectWindow.querySelector('.control-btn.minimize');
     const projectMaximizeBtn = projectWindow.querySelector('.control-btn.maximize');
+    const projectContent = projectWindow.querySelector('.window-content');
+
+    const muteButton = document.querySelector('#mute-button');
+    const muteIcon = muteButton.querySelector('img');
 
     terminalButton.addEventListener('click', () => {
         terminalWindow.classList.toggle('show');
@@ -54,10 +64,12 @@ document.addEventListener('DOMContentLoaded', () => {
     terminalMinimizeBtn.addEventListener('click', () => {
         if (terminalWindow.classList.contains('maximized')) return;
         terminalWindow.classList.toggle('minimized');
+        playClickSound();
     });
     terminalMaximizeBtn.addEventListener('click', () => {
         if (terminalWindow.classList.contains('minimized')) return;
         handleMaximize(terminalWindow);
+        playClickSound();
     });
 
     homeButton.addEventListener('click', () => {
@@ -73,10 +85,12 @@ document.addEventListener('DOMContentLoaded', () => {
     homeMinimizeBtn.addEventListener('click', () => {
         if (homeWindow.classList.contains('maximized')) return;
         homeWindow.classList.toggle('minimized');
+        playClickSound();
     });
     homeMaximizeBtn.addEventListener('click', () => {
         if (homeWindow.classList.contains('minimized')) return;
         handleMaximize(homeWindow);
+        playClickSound();
     });
 
     linksButton.addEventListener('click', () => {
@@ -92,10 +106,12 @@ document.addEventListener('DOMContentLoaded', () => {
     linksMinimizeBtn.addEventListener('click', () => {
         if (linksWindow.classList.contains('maximized')) return;
         linksWindow.classList.toggle('minimized');
+        playClickSound();
     });
     linksMaximizeBtn.addEventListener('click', () => {
         if (linksWindow.classList.contains('minimized')) return;
         handleMaximize(linksWindow);
+        playClickSound();
     });
 
     projectButton.addEventListener('click', () => {
@@ -111,10 +127,25 @@ document.addEventListener('DOMContentLoaded', () => {
     projectMinimizeBtn.addEventListener('click', () => {
         if (projectWindow.classList.contains('maximized')) return;
         projectWindow.classList.toggle('minimized');
+        playClickSound();
     });
     projectMaximizeBtn.addEventListener('click', () => {
         if (projectWindow.classList.contains('minimized')) return;
         handleMaximize(projectWindow);
+        playClickSound();
+    });
+
+    muteButton.addEventListener('click', () => {
+        isMuted = !isMuted;
+        if (isMuted) {
+            muteIcon.src = 'assets/sound-off.svg';
+            muteIcon.alt = 'Unmute';
+        } else {
+            muteIcon.src = 'assets/sound-on.svg';
+            muteIcon.alt = 'Mute';
+        }
+        clickSound.currentTime = 0;
+        clickSound.play();
     });
 
     makeDraggable(terminalWindow);
@@ -122,30 +153,30 @@ document.addEventListener('DOMContentLoaded', () => {
     makeDraggable(linksWindow);
     makeDraggable(projectWindow);
 
-    terminalWindow.addEventListener('mousedown', () => {
-        bringToFront(terminalWindow);
-    });
-    homeWindow.addEventListener('mousedown', () => {
-        bringToFront(homeWindow);
-    });
-    linksWindow.addEventListener('mousedown', () => {
-        bringToFront(linksWindow);
-    });
-    projectWindow.addEventListener('mousedown', () => {
-        bringToFront(projectWindow);
-    });
-
     const welcomeMessage = document.createElement('p');
     terminalContent.prepend(welcomeMessage);
     typewrite(welcomeMessage, "Welcome to char@kali. Type 'help' for available commands.", () => {
         terminalContent.scrollTop = terminalContent.scrollHeight;
     });
 
-    terminalWindow.addEventListener('click', (e) => {
-        if (e.target.classList.contains('window-content') || e.target.classList.contains('terminal-line') || e.target.classList.contains('prompt')) {
-            const input = terminalContent.querySelector('.terminal-input');
-            if (input) input.focus();
-        }
+    // Listen for clicks *inside* the window content to focus
+    terminalContent.addEventListener('mousedown', () => {
+        bringToFront(terminalWindow);
+        playClickSound();
+        const input = terminalContent.querySelector('.terminal-input');
+        if (input) input.focus();
+    });
+    homeContent.addEventListener('mousedown', () => {
+        bringToFront(homeWindow);
+        playClickSound();
+    });
+    linksContent.addEventListener('mousedown', () => {
+        bringToFront(linksWindow);
+        playClickSound();
+    });
+    projectContent.addEventListener('mousedown', () => {
+        bringToFront(projectWindow);
+        playClickSound();
     });
 
     terminalContent.addEventListener('keydown', async (e) => {
@@ -175,10 +206,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.addEventListener('mousedown', (e) => {
-        if (e.target.closest('button, .title-bar')) {
-            if (e.target.classList.contains('close')) {
-                return;
-            }
+        if (e.target.closest('#mute-button')) {
+            return;
+        }
+        if (e.target.classList.contains('close')) {
+            return;
+        }
+        if (e.target.closest('.window')) {
+            return;
+        }
+        if (e.target.closest('button')) {
             playClickSound();
         }
     });
@@ -302,6 +339,8 @@ function makeDraggable(element) {
     let offsetX, offsetY;
 
     titleBar.addEventListener('mousedown', (e) => {
+        bringToFront(element);
+
         if (element.classList.contains('maximized')) {
             return;
         }
