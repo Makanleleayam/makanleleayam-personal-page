@@ -297,6 +297,10 @@ body {
 
 
 /*project*/
+.task-button.project img {
+    height: 24px;
+}
+
 #project-window .window-content {
     color: #EEE8D5; 
     font-family: Arial, sans-serif;
