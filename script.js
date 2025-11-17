@@ -1,4 +1,18 @@
 let currentZIndex = 101;
+const clickSound = new Audio('assets/zapsplat_multimedia_button_click_bright_002_92099.mp3');
+clickSound.volume = 0.5; 
+const closeSound = new Audio('assets/zapsplat_multimedia_button_click_fast_short_001_79285.mp3');
+closeSound.volume = 0.5;
+
+function playClickSound() {
+    clickSound.currentTime = 0;
+    clickSound.play();
+}
+
+function playCloseSound() {
+    closeSound.currentTime = 0;
+    closeSound.play();
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     const terminalButton = document.querySelector('.task-button.terminal');
@@ -35,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     terminalCloseBtn.addEventListener('click', () => {
         terminalWindow.classList.remove('show');
+        playCloseSound();
     });
     terminalMinimizeBtn.addEventListener('click', () => {
         if (terminalWindow.classList.contains('maximized')) return;
@@ -53,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     homeCloseBtn.addEventListener('click', () => {
         homeWindow.classList.remove('show');
+        playCloseSound();
     });
     homeMinimizeBtn.addEventListener('click', () => {
         if (homeWindow.classList.contains('maximized')) return;
@@ -71,6 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     linksCloseBtn.addEventListener('click', () => {
         linksWindow.classList.remove('show');
+        playCloseSound();
     });
     linksMinimizeBtn.addEventListener('click', () => {
         if (linksWindow.classList.contains('maximized')) return;
@@ -89,6 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     projectCloseBtn.addEventListener('click', () => {
         projectWindow.classList.remove('show');
+        playCloseSound();
     });
     projectMinimizeBtn.addEventListener('click', () => {
         if (projectWindow.classList.contains('maximized')) return;
@@ -153,6 +171,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             terminalContent.scrollTop = terminalContent.scrollHeight;
+        }
+    });
+
+    document.addEventListener('mousedown', (e) => {
+        if (e.target.closest('button, .title-bar')) {
+            if (e.target.classList.contains('close')) {
+                return;
+            }
+            playClickSound();
         }
     });
 });
@@ -260,7 +287,7 @@ function handleMaximize(windowElement) {
         windowElement.dataset.left = rect.left + 'px';
 
         windowElement.style.width = '100vw';
-        windowElement.style.height = '1TwoVH';
+        windowElement.style.height = '100vh';
         windowElement.style.top = '0px';
         windowElement.style.left = '0px';
         windowElement.classList.add('maximized');
