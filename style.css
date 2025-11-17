@@ -150,8 +150,8 @@ body {
 
 /*terminal*/
 #terminal-window {
-    top: 120px;
-    left: 200px;
+    top: 140px;
+    left: 190px;
 }
 
 #terminal-window .window-content {
@@ -222,6 +222,11 @@ body {
 }
 
 /*home*/
+#home-window {
+    top: 50px;
+    left: 100px;
+}
+
 #home-window .window-content {
     color: #EEE8D5; 
     font-family: Arial, sans-serif;
@@ -242,6 +247,9 @@ body {
     width: 442px;
     height: 374px;
     border-radius: 15px;
+    top: 100px;
+    left: 830px;
+    border: none;
 }
 
 #links-window .title-bar {
@@ -297,6 +305,11 @@ body {
 
 
 /*project*/
+#project-window {
+    top: 180px;
+    left: 270px;
+}
+
 .task-button.project img {
     height: 24px;
 }
