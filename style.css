@@ -1,3 +1,4 @@
+/* --- General Styles --- */
 body, html {
     height: 100%;
     margin: 0;
@@ -19,6 +20,8 @@ body {
     height: 40px; 
     background-color: rgba(26, 26, 26, 0.9);
     box-sizing: border-box;
+    z-index: 1000;
+    position: relative;
 }
 
 .task-bar ul{
@@ -146,7 +149,7 @@ body {
 }
 
 .control-btn.close:hover {
-    background: rgb(255, 0, 0.5);
+    background: #e81123; /* Fixed valid color code */
     border-top-right-radius: 15px;
     padding: 0 12px;
 }
@@ -340,4 +343,124 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+/* --- Launcher Overlay Styles --- */
+.launcher {
+    display: none; /* Hidden by default */
+    position: absolute;
+    top: 50px; /* Just below the taskbar */
+    left: 10px; /* Aligned to the left */
+    z-index: 9998;
+}
+
+.launcher.show {
+    display: block;
+}
+
+.launcher-window {
+    width: 480px;
+    height: 640px;
+    background-color: #2b2b2b; /* Dark gray background */
+    border: 1px solid #444;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* Top Search Bar */
+.search-container {
+    margin-bottom: 10px;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    background-color: #2b2b2b;
+    border: 1px solid #ff8c00; /* Orange border like screenshot */
+    border-radius: 20px; /* Pill shape */
+    padding: 5px 10px;
+}
+
+.search-icon {
+    color: #bbb;
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+}
+
+#launcher-search-input {
+    background: transparent;
+    border: none;
+    color: #fff;
+    flex-grow: 1;
+    outline: none;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* Body: Split into Sidebar and Preview */
+.launcher-body {
+    display: flex;
+    flex-grow: 1;
+    height: 100%;
+}
+
+/* Left Column */
+.launcher-sidebar {
+    width: 45%;
+    padding-right: 10px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.launcher-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;
+    border-radius: 20px; /* Rounded ends */
+    cursor: pointer;
+    color: #eee;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    transition: background 0.1s;
+}
+
+.launcher-item img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.launcher-item:hover {
+    background-color: #5e3e2e; /* The brown color from screenshot */
+}
+
+/* Right Column */
+.launcher-preview {
+    width: 55%;
+    background-color: #1a1a1a; /* Darker black background */
+    border-radius: 8px;
+    padding: 20px;
+    color: #eee;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: center;
+}
+
+/* Custom Scrollbar for sidebar */
+.launcher-sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+.launcher-sidebar::-webkit-scrollbar-thumb {
+    background: #555; 
+    border-radius: 4px;
 }

@@ -1,3 +1,4 @@
+// Global State & Sound Initialization
 let currentZIndex = 101;
 let isMuted = false;
 const clickSound = new Audio('assets/zapsplat_multimedia_button_click_bright_002_92099.mp3');
@@ -5,6 +6,7 @@ clickSound.volume = 0.5;
 const closeSound = new Audio('assets/zapsplat_multimedia_button_click_fast_short_001_79285.mp3');
 closeSound.volume = 0.5;
 
+// Sound Utility Functions
 function playClickSound() {
     if (isMuted) return;
     clickSound.currentTime = 0;
@@ -17,8 +19,10 @@ function playCloseSound() {
     closeSound.play();
 }
 
+// Main Application Start
 document.addEventListener('DOMContentLoaded', () => {
 
+    // Query DOM Elements
     const terminalButton = document.querySelector('.task-button.terminal');
     const terminalWindow = document.querySelector('#terminal-window');
     const terminalCloseBtn = terminalWindow.querySelector('.control-btn.close');
@@ -50,6 +54,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const muteButton = document.querySelector('#mute-button');
     const muteIcon = muteButton.querySelector('img');
 
+    // --- LAUNCHER ELEMENTS ---
+    const cmdButton = document.querySelector('.task-button.cmd');
+    const launcher = document.querySelector('#launcher');
+    const launcherSearchInput = document.querySelector('#launcher-search-input');
+    const launcherItems = document.querySelectorAll('.launcher-item');
+
+
+    // --- Taskbar & Window Control Event Listeners ---
+
+    // Terminal Window Listeners
     terminalButton.addEventListener('click', () => {
         terminalWindow.classList.toggle('show');
         if (terminalWindow.classList.contains('show')) {
@@ -72,6 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
         playClickSound();
     });
 
+    // Home Window Listeners
     homeButton.addEventListener('click', () => {
         homeWindow.classList.toggle('show');
         if (homeWindow.classList.contains('show')) {
@@ -93,6 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
         playClickSound();
     });
 
+    // Links Window Listeners
     linksButton.addEventListener('click', () => {
         linksWindow.classList.toggle('show');
         if (linksWindow.classList.contains('show')) {
@@ -114,6 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
         playClickSound();
     });
 
+    // Project Window Listeners
     projectButton.addEventListener('click', () => {
         projectWindow.classList.toggle('show');
         if (projectWindow.classList.contains('show')) {
@@ -135,6 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
         playClickSound();
     });
 
+    // Mute Button Listener
     muteButton.addEventListener('click', () => {
         isMuted = !isMuted;
         if (isMuted) {
@@ -148,35 +166,89 @@ document.addEventListener('DOMContentLoaded', () => {
         clickSound.play();
     });
 
+    // --- LAUNCHER LOGIC ---
+    
+    // Toggle Launcher
+    cmdButton.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent immediate closing
+        launcher.classList.toggle('show');
+        if (launcher.classList.contains('show')) {
+            playClickSound();
+            launcherSearchInput.focus();
+            launcherSearchInput.value = ''; // Clear search
+            // Show all items
+            launcherItems.forEach(item => item.style.display = 'flex');
+        }
+    });
+
+    // Search Filtering
+    launcherSearchInput.addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase();
+        launcherItems.forEach(item => {
+            const text = item.innerText.toLowerCase();
+            if(text.includes(term)) {
+                item.style.display = 'flex';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    });
+
+    // Close Launcher when clicking outside
+    document.addEventListener('click', (e) => {
+        if (launcher.classList.contains('show') && !launcher.contains(e.target) && !cmdButton.contains(e.target)) {
+            launcher.classList.remove('show');
+        }
+    });
+
+
+    // Initialize Draggable Windows
     makeDraggable(terminalWindow);
     makeDraggable(homeWindow);
     makeDraggable(linksWindow);
     makeDraggable(projectWindow);
 
+    // --- Window Focus Logic (Content Only) ---
+    
+    // Terminal content click
+    terminalWindow.addEventListener('click', (e) => {
+        if (e.target.closest('.window-content')) {
+            bringToFront(terminalWindow);
+            playClickSound();
+            const input = terminalContent.querySelector('.terminal-input');
+            if (input) input.focus();
+        }
+    });
+
+    // Home content click
+    if(homeContent) {
+        homeContent.addEventListener('mousedown', () => {
+            bringToFront(homeWindow);
+            playClickSound();
+        });
+    }
+
+    // Links content click
+    if(linksContent) {
+        linksContent.addEventListener('mousedown', () => {
+            bringToFront(linksWindow);
+            playClickSound();
+        });
+    }
+
+    // Project content click
+    if(projectContent) {
+        projectContent.addEventListener('mousedown', () => {
+            bringToFront(projectWindow);
+            playClickSound();
+        });
+    }
+
+    // Terminal Typing Logic
     const welcomeMessage = document.createElement('p');
     terminalContent.prepend(welcomeMessage);
     typewrite(welcomeMessage, "Welcome to char@kali. Type 'help' for available commands.", () => {
         terminalContent.scrollTop = terminalContent.scrollHeight;
-    });
-
-    // Listen for clicks *inside* the window content to focus
-    terminalContent.addEventListener('mousedown', () => {
-        bringToFront(terminalWindow);
-        playClickSound();
-        const input = terminalContent.querySelector('.terminal-input');
-        if (input) input.focus();
-    });
-    homeContent.addEventListener('mousedown', () => {
-        bringToFront(homeWindow);
-        playClickSound();
-    });
-    linksContent.addEventListener('mousedown', () => {
-        bringToFront(linksWindow);
-        playClickSound();
-    });
-    projectContent.addEventListener('mousedown', () => {
-        bringToFront(projectWindow);
-        playClickSound();
     });
 
     terminalContent.addEventListener('keydown', async (e) => {
@@ -205,25 +277,77 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // --- Global Sound Listener ---
     document.addEventListener('mousedown', (e) => {
-        if (e.target.closest('#mute-button')) {
-            return;
-        }
-        if (e.target.classList.contains('close')) {
-            return;
-        }
-        if (e.target.closest('.window')) {
-            return;
-        }
+        if (e.target.closest('#mute-button')) return;
+        if (e.target.classList.contains('close')) return;
+        if (e.target.closest('.title-bar')) return; // Silent drag
+        if (e.target.closest('.window-content')) return; // Handled specifically
+        if (e.target.closest('.launcher')) return; // Handled specifically
+        
+        // Play sound for taskbar buttons
         if (e.target.closest('button')) {
             playClickSound();
         }
     });
-});
+
+    // Icons
+    feather.replace();
+
+}); // End DOMContentLoaded
+
+
+// --- GLOBAL FUNCTIONS (Must be outside DOMContentLoaded for HTML onclick) ---
+
+// Updates the text on the right side when hovering over launcher items
+function showDetails(text) {
+    const preview = document.getElementById('preview-text');
+    if (preview) {
+        preview.innerText = text;
+    }
+}
+
+// Handles opening apps from the launcher
+function openApp(appName) {
+    const launcher = document.querySelector('#launcher');
+    // Close the launcher
+    launcher.classList.remove('show');
+    
+    playClickSound(); // Play sound on app open
+
+    // Logic to open specific windows
+    if (appName === 'terminal') {
+        const win = document.querySelector('#terminal-window');
+        win.classList.add('show');
+        bringToFront(win);
+        const input = win.querySelector('.terminal-input');
+        if(input) input.focus();
+    } else if (appName === 'home') {
+        const win = document.querySelector('#home-window');
+        win.classList.add('show');
+        bringToFront(win);
+    } else if (appName === 'links') {
+        const win = document.querySelector('#links-window');
+        win.classList.add('show');
+        bringToFront(win);
+    } else if (appName === 'project') {
+        const win = document.querySelector('#project-window');
+        win.classList.add('show');
+        bringToFront(win);
+    } else if (appName === 'google') {
+        // Use search input value if present, otherwise just google
+        const input = document.querySelector('#launcher-search-input');
+        const query = input.value ? input.value : ' ';
+        window.open('https://www.google.com/search?q=' + encodeURIComponent(query), '_blank');
+    } else {
+        alert('Application "' + appName + '" is under construction!');
+    }
+}
 
 function bringToFront(windowElement) {
     currentZIndex++;
     windowElement.style.zIndex = currentZIndex;
+    // Silent (sound handled by click listeners)
 }
 
 function addNewInputLine(container) {
@@ -251,7 +375,6 @@ async function processCommand(command, container) {
             }
             await typewrite(output, argString);
             break;
-        
         case 'help':
             const helpText = `
 Available commands:
@@ -262,20 +385,16 @@ Available commands:
 `;
             await typewrite(output, helpText);
             break;
-        
         case 'clear':
             container.innerHTML = '';
             addNewInputLine(container);
             break;
-
         case 'date':
             await typewrite(output, new Date().toString());
             break;
-
         case '':
             container.removeChild(output);
             break;
-
         default:
             await typewrite(output, `command not found: ${cmd}`);
             break;
@@ -287,7 +406,6 @@ function typewrite(element, text, callback) {
         let i = 0;
         const speed = 1;
         element.innerHTML = '';
-
         function type() {
             if (i < text.length) {
                 if (text.charAt(i) === '\n') {
@@ -308,7 +426,6 @@ function typewrite(element, text, callback) {
 
 function handleMaximize(windowElement) {
     const isMaximized = windowElement.classList.contains('maximized');
-
     if (isMaximized) {
         const oldRect = windowElement.dataset;
         windowElement.style.width = oldRect.width;
@@ -322,7 +439,6 @@ function handleMaximize(windowElement) {
         windowElement.dataset.height = rect.height + 'px';
         windowElement.dataset.top = rect.top + 'px';
         windowElement.dataset.left = rect.left + 'px';
-
         windowElement.style.width = '100vw';
         windowElement.style.height = '100vh';
         windowElement.style.top = '0px';
@@ -339,6 +455,7 @@ function makeDraggable(element) {
     let offsetX, offsetY;
 
     titleBar.addEventListener('mousedown', (e) => {
+        // Bring to front SILENTLY when dragging starts
         bringToFront(element);
 
         if (element.classList.contains('maximized')) {

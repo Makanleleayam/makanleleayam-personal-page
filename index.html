@@ -10,6 +10,58 @@
     <script src="https://unpkg.com/feather-icons"></script>
 </head>
 <body>
+    
+    <div id="launcher" class="launcher">
+        <div class="launcher-window">
+            
+            <div class="search-container">
+                <div class="search-box">
+                    <i data-feather="search" class="search-icon"></i>
+                    <input type="text" id="launcher-search-input" placeholder="">
+                </div>
+            </div>
+
+            <div class="launcher-body">
+                
+                <div class="launcher-sidebar">
+                    
+                    <div class="launcher-item" onclick="openApp('terminal')" onmouseover="showDetails('Command Line Interface')">
+                        <img src="assets/terminal.svg" alt="icon"> <span>Terminal</span>
+                    </div>
+
+                    <div class="launcher-item" onclick="openApp('home')" onmouseover="showDetails('Access your personal files')">
+                        <img src="assets/home.svg" alt="icon">
+                        <span>Home</span>
+                    </div>
+
+                    <div class="launcher-item" onclick="openApp('music-app')" onmouseover="showDetails('my favs songs of all time ;)')">
+                        <img src="assets/music.svg" alt="icon"> <span>Music</span>
+                    </div>
+
+                    <div class="launcher-item" onclick="openApp('calculator')" onmouseover="showDetails('Basic arithmetic operations')">
+                        <img src="assets/calculator.svg" alt="icon"> <span>Calculator</span>
+                    </div>
+
+                    <div class="launcher-item" onclick="openApp('links')" onmouseover="showDetails('Connect with me online')">
+                        <img src="assets/links.png" alt="icon">
+                        <span>Links</span>
+                    </div>
+
+                    <div class="launcher-item" onclick="openApp('project')" onmouseover="showDetails('View my portfolio projects')">
+                        <img src="assets/project.svg" alt="icon">
+                        <span>Projects</span>
+                    </div>
+
+                </div>
+
+                <div class="launcher-preview">
+                    <p id="preview-text">Select an app...</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
     <div class="task-bar">
         <ul>
             <li>
@@ -40,7 +92,6 @@
                     <img src="assets/project.svg" alt="projects">
                 </button>
             </li>
-            <!-- mute and unmute on the end of the taskbar -->
             <li class="task-bar-right">
                 <button class="task-button" id="mute-button">
                     <img src="assets/sound-on.svg" alt="Mute">
@@ -86,7 +137,6 @@
     </div>
 
     <div class="window" id="links-window">
-        
         <div class="title-bar">
             <span class="title-text">char@kali - links</span>
             <div class="controls">
@@ -98,27 +148,25 @@
         
         <div class="window-content">
            <div class="links-grid">
+                <button class="link-button" onclick="window.open('https://instagram.com/charis_surijakko', '_blank')">
+                    <img src="assets/instagram.svg" alt="Instagram @charis_surijakko">
+                </button>
 
-            <button class="link-button" onclick="window.open('https://instagram.com/charis_surijakko', '_blank')">
-                <img src="assets/instagram.svg" alt="Instagram @charis_surijakko">
-            </button>
+                <button class="link-button" onclick="window.open('https://open.spotify.com/user/21vpt5kbpkgvtr7jlbm5nkapq?si=BJa9nuJdRzO6Yxm4xMyQfQ', '_blank')">
+                    <img src="assets/spotify.svg" alt="Spotify">
+                </button>
 
-            <button class="link-button" onclick="window.open('https://open.spotify.com/user/21vpt5kbpkgvtr7jlbm5nkapq?si=BJa9nuJdRzO6Yxm4xMyQfQ', '_blank')">
-                <img src="assets/spotify.svg" alt="Spotify">
-            </button>
+                <button class="link-button" onclick="window.open('https://github.com/izitChar', '_blank')">
+                    <img src="assets/github.svg" alt="GitHub izitChar">
+                </button>
 
-            <button class="link-button" onclick="window.open('https://github.com/izitChar', '_blank')">
-                <img src="assets/github.svg" alt="GitHub izitChar">
-            </button>
+                <button class="link-button" onclick="window.open('https://discord.com/users/anjaayaa', '_blank')">
+                    <img src="assets/discord.svg" alt="Discord anjaayaa">
+                </button>
 
-            <button class="link-button" onclick="window.open('https://discord.com/users/anjaayaa', '_blank')">
-                <img src="assets/discord.svg" alt="Discord anjaayaa">
-            </button>
-
-            <button class="link-button" onclick="window.open('https://tiktok.com/@typechar0', '_blank')">
-                <img src="assets/tiktok.svg" alt="TikTok @typechar0">
-            </button>
-
+                <button class="link-button" onclick="window.open('https://tiktok.com/@typechar0', '_blank')">
+                    <img src="assets/tiktok.svg" alt="TikTok @typechar0">
+                </button>
             </div>
         </div>
     </div>
