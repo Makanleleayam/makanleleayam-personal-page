@@ -1,12 +1,11 @@
 // Global State & Sound Initialization
-let currentZIndex = 101;
+let currentZIndex = 1100;
 let isMuted = false;
 const clickSound = new Audio('assets/zapsplat_multimedia_button_click_bright_002_92099.mp3');
 clickSound.volume = 0.5; 
 const closeSound = new Audio('assets/zapsplat_multimedia_button_click_fast_short_001_79285.mp3');
 closeSound.volume = 0.5;
 
-// Sound Utility Functions
 function playClickSound() {
     if (isMuted) return;
     clickSound.currentTime = 0;
@@ -65,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Terminal Window Listeners
     terminalButton.addEventListener('click', () => {
+        playClickSound();
         terminalWindow.classList.toggle('show');
         if (terminalWindow.classList.contains('show')) {
             bringToFront(terminalWindow);
@@ -88,6 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Home Window Listeners
     homeButton.addEventListener('click', () => {
+        playClickSound();
         homeWindow.classList.toggle('show');
         if (homeWindow.classList.contains('show')) {
             bringToFront(homeWindow);
@@ -110,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Links Window Listeners
     linksButton.addEventListener('click', () => {
+        playClickSound();
         linksWindow.classList.toggle('show');
         if (linksWindow.classList.contains('show')) {
             bringToFront(linksWindow);
@@ -132,6 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Project Window Listeners
     projectButton.addEventListener('click', () => {
+        playClickSound();
         projectWindow.classList.toggle('show');
         if (projectWindow.classList.contains('show')) {
             bringToFront(projectWindow);
@@ -170,10 +173,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Toggle Launcher
     cmdButton.addEventListener('click', (e) => {
-        e.stopPropagation(); // Prevent immediate closing
+        playClickSound();
+        e.stopPropagation();
         launcher.classList.toggle('show');
         if (launcher.classList.contains('show')) {
-            playClickSound();
             launcherSearchInput.focus();
             launcherSearchInput.value = ''; // Clear search
             // Show all items
@@ -201,12 +204,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-
     // Initialize Draggable Windows
     makeDraggable(terminalWindow);
     makeDraggable(homeWindow);
     makeDraggable(linksWindow);
     makeDraggable(projectWindow);
+
+    //Reset text when the mouse leaves the list
+    if (launcherSidebar) {
+    launcherSidebar.addEventListener('mouseleave', () => {
+        showDetails('Select an app...');
+    });
+    }
 
     // --- Window Focus Logic (Content Only) ---
     
@@ -214,7 +223,6 @@ document.addEventListener('DOMContentLoaded', () => {
     terminalWindow.addEventListener('click', (e) => {
         if (e.target.closest('.window-content')) {
             bringToFront(terminalWindow);
-            playClickSound();
             const input = terminalContent.querySelector('.terminal-input');
             if (input) input.focus();
         }
@@ -224,7 +232,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if(homeContent) {
         homeContent.addEventListener('mousedown', () => {
             bringToFront(homeWindow);
-            playClickSound();
         });
     }
 
@@ -232,7 +239,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if(linksContent) {
         linksContent.addEventListener('mousedown', () => {
             bringToFront(linksWindow);
-            playClickSound();
         });
     }
 
@@ -240,7 +246,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if(projectContent) {
         projectContent.addEventListener('mousedown', () => {
             bringToFront(projectWindow);
-            playClickSound();
         });
     }
 
@@ -281,9 +286,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('mousedown', (e) => {
         if (e.target.closest('#mute-button')) return;
         if (e.target.classList.contains('close')) return;
-        if (e.target.closest('.title-bar')) return; // Silent drag
-        if (e.target.closest('.window-content')) return; // Handled specifically
-        if (e.target.closest('.launcher')) return; // Handled specifically
+        if (e.target.closest('.title-bar')) return;
+        if (e.target.closest('.window-content')) return;
+        if (e.target.closest('.launcher')) return;
         
         // Play sound for taskbar buttons
         if (e.target.closest('button')) {
@@ -291,13 +296,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Icons
     feather.replace();
 
 }); // End DOMContentLoaded
 
 
-// --- GLOBAL FUNCTIONS (Must be outside DOMContentLoaded for HTML onclick) ---
+// --- GLOBAL FUNCTIONS  ---
 
 // Updates the text on the right side when hovering over launcher items
 function showDetails(text) {
@@ -312,7 +316,6 @@ function openApp(appName) {
     const launcher = document.querySelector('#launcher');
     // Close the launcher
     launcher.classList.remove('show');
-    
     playClickSound(); // Play sound on app open
 
     // Logic to open specific windows
@@ -334,11 +337,6 @@ function openApp(appName) {
         const win = document.querySelector('#project-window');
         win.classList.add('show');
         bringToFront(win);
-    } else if (appName === 'google') {
-        // Use search input value if present, otherwise just google
-        const input = document.querySelector('#launcher-search-input');
-        const query = input.value ? input.value : ' ';
-        window.open('https://www.google.com/search?q=' + encodeURIComponent(query), '_blank');
     } else {
         alert('Application "' + appName + '" is under construction!');
     }
@@ -425,6 +423,7 @@ function typewrite(element, text, callback) {
 }
 
 function handleMaximize(windowElement) {
+    bringToFront(windowElement);
     const isMaximized = windowElement.classList.contains('maximized');
     if (isMaximized) {
         const oldRect = windowElement.dataset;
@@ -455,7 +454,6 @@ function makeDraggable(element) {
     let offsetX, offsetY;
 
     titleBar.addEventListener('mousedown', (e) => {
-        // Bring to front SILENTLY when dragging starts
         bringToFront(element);
 
         if (element.classList.contains('maximized')) {
