@@ -50,6 +50,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const projectMaximizeBtn = projectWindow.querySelector('.control-btn.maximize');
     const projectContent = projectWindow.querySelector('.window-content');
 
+    const calcWindow = document.querySelector('#calculator-window');
+    const calcCloseBtn = calcWindow.querySelector('.control-btn.close');
+    const calcMinimizeBtn = calcWindow.querySelector('.control-btn.minimize');
+    const calcMaximizeBtn = calcWindow.querySelector('.control-btn.maximize');
+    const calcDisplay = document.querySelector('#calc-display');
+    const calcButtons = document.querySelectorAll('.calc-btn');
+
     const muteButton = document.querySelector('#mute-button');
     const muteIcon = muteButton.querySelector('img');
 
@@ -167,6 +174,41 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         clickSound.currentTime = 0;
         clickSound.play();
+    });
+
+    // Calculator Listener
+    if(calcWindow) {
+        calcWindow.addEventListener('mousedown', () => {
+            bringToFront(calcWindow);
+        });
+        
+        calcCloseBtn.addEventListener('click', () => {
+            calcWindow.classList.remove('show');
+            playCloseSound();
+            // Optional: Clear calculator on close
+            if(calcDisplay) calcDisplay.innerText = '0';
+        });
+
+        calcMinimizeBtn.addEventListener('click', () => {
+            if (calcWindow.classList.contains('maximized')) return;
+            calcWindow.classList.toggle('minimized');
+            playClickSound();
+        });
+
+        calcMaximizeBtn.addEventListener('click', () => {
+            if (calcWindow.classList.contains('minimized')) return;
+            handleMaximize(calcWindow);
+            playClickSound();
+        });
+        
+        makeDraggable(calcWindow);
+    }
+
+    calcButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            playClickSound(); // Use your global sound
+            handleCalcInput(btn.innerText);
+        });
     });
 
     // --- LAUNCHER LOGIC ---
@@ -337,6 +379,10 @@ function openApp(appName) {
         const win = document.querySelector('#project-window');
         win.classList.add('show');
         bringToFront(win);
+    } else if (appName === 'calculator') {
+        const win = document.querySelector('#calculator-window');
+        win.classList.add('show');
+        bringToFront(win);
     } else {
         alert('Application "' + appName + '" is under construction!');
     }
@@ -500,4 +546,35 @@ function makeDraggable(element) {
     });
 
     titleBar.style.cursor = 'grab';
+}
+
+// Simple Calculator Logic
+function handleCalcInput(value) {
+    const display = document.querySelector('#calc-display');
+    let currentText = display.innerText;
+
+    if (value === 'C') {
+        display.innerText = '0';
+    } else if (value === '=') {
+        try {
+            // Safety: Only allow numbers and math operators
+            const safeExpression = currentText.replace(/[^0-9+\-*/.]/g, '');
+            // Evaluate the math
+            display.innerText = eval(safeExpression); 
+        } catch (e) {
+            display.innerText = 'Error';
+        }
+    } else {
+        // If display is 0 or Error, replace it, otherwise append
+        if (currentText === '0' || currentText === 'Error') {
+            // Don't replace 0 if the input is an operator (e.g. 0 + 5)
+            if (['+', '-', '*', '/'].includes(value)) {
+                display.innerText = currentText + value;
+            } else {
+                display.innerText = value;
+            }
+        } else {
+            display.innerText += value;
+        }
+    }
 }
