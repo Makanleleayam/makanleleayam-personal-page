@@ -1,6 +1,7 @@
 // Global State & Sound Initialization
 let currentZIndex = 1100;
 let isMuted = false;
+
 const clickSound = new Audio('assets/zapsplat_multimedia_button_click_bright_002_92099.mp3');
 clickSound.volume = 0.5; 
 const closeSound = new Audio('assets/zapsplat_multimedia_button_click_fast_short_001_79285.mp3');
@@ -21,7 +22,9 @@ function playCloseSound() {
 // Main Application Start
 document.addEventListener('DOMContentLoaded', () => {
 
-    // Query DOM Elements
+    // --- Query DOM Elements ---
+
+    // Terminal
     const terminalButton = document.querySelector('.task-button.terminal');
     const terminalWindow = document.querySelector('#terminal-window');
     const terminalCloseBtn = terminalWindow.querySelector('.control-btn.close');
@@ -29,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const terminalMaximizeBtn = terminalWindow.querySelector('.control-btn.maximize');
     const terminalContent = document.querySelector('#terminal-content');
 
+    // Home
     const homeButton = document.querySelector('.task-button.home');
     const homeWindow = document.querySelector('#home-window');
     const homeCloseBtn = homeWindow.querySelector('.control-btn.close');
@@ -36,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const homeMaximizeBtn = homeWindow.querySelector('.control-btn.maximize');
     const homeContent = homeWindow.querySelector('.window-content');
 
+    // Links
     const linksButton = document.querySelector('.task-button.links');
     const linksWindow = document.querySelector('#links-window');
     const linksCloseBtn = linksWindow.querySelector('.control-btn.close');
@@ -43,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const linksMaximizeBtn = linksWindow.querySelector('.control-btn.maximize');
     const linksContent = linksWindow.querySelector('.window-content');
 
+    // Projects
     const projectButton = document.querySelector('.task-button.project');
     const projectWindow = document.querySelector('#project-window');
     const projectCloseBtn = projectWindow.querySelector('.control-btn.close');
@@ -50,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const projectMaximizeBtn = projectWindow.querySelector('.control-btn.maximize');
     const projectContent = projectWindow.querySelector('.window-content');
 
+    // Calculator
     const calcWindow = document.querySelector('#calculator-window');
     const calcCloseBtn = calcWindow.querySelector('.control-btn.close');
     const calcMinimizeBtn = calcWindow.querySelector('.control-btn.minimize');
@@ -57,25 +64,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const calcDisplay = document.querySelector('#calc-display');
     const calcButtons = document.querySelectorAll('.calc-btn');
 
+    // System
     const muteButton = document.querySelector('#mute-button');
     const muteIcon = muteButton.querySelector('img');
 
-    // --- LAUNCHER ELEMENTS ---
+    // Launcher
     const cmdButton = document.querySelector('.task-button.cmd');
     const launcher = document.querySelector('#launcher');
     const launcherSearchInput = document.querySelector('#launcher-search-input');
     const launcherItems = document.querySelectorAll('.launcher-item');
+    const launcherSidebar = document.querySelector('.launcher-sidebar');
 
 
     // --- Taskbar & Window Control Event Listeners ---
 
-    // Terminal Window Listeners
+    // 1. Terminal Window
     terminalButton.addEventListener('click', () => {
         playClickSound();
         terminalWindow.classList.toggle('show');
         if (terminalWindow.classList.contains('show')) {
             bringToFront(terminalWindow);
-            terminalContent.querySelector('.terminal-input').focus();
+            // Focus input if it exists
+            const input = terminalContent.querySelector('.terminal-input');
+            if(input) input.focus();
         }
     });
     terminalCloseBtn.addEventListener('click', () => {
@@ -93,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
         playClickSound();
     });
 
-    // Home Window Listeners
+    // 2. Home Window
     homeButton.addEventListener('click', () => {
         playClickSound();
         homeWindow.classList.toggle('show');
@@ -116,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
         playClickSound();
     });
 
-    // Links Window Listeners
+    // 3. Links Window
     linksButton.addEventListener('click', () => {
         playClickSound();
         linksWindow.classList.toggle('show');
@@ -139,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
         playClickSound();
     });
 
-    // Project Window Listeners
+    // 4. Project Window
     projectButton.addEventListener('click', () => {
         playClickSound();
         projectWindow.classList.toggle('show');
@@ -162,21 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
         playClickSound();
     });
 
-    // Mute Button Listener
-    muteButton.addEventListener('click', () => {
-        isMuted = !isMuted;
-        if (isMuted) {
-            muteIcon.src = 'assets/sound-off.svg';
-            muteIcon.alt = 'Unmute';
-        } else {
-            muteIcon.src = 'assets/sound-on.svg';
-            muteIcon.alt = 'Mute';
-        }
-        clickSound.currentTime = 0;
-        clickSound.play();
-    });
-
-    // Calculator Listener
+    // 5. Calculator Window
     if(calcWindow) {
         calcWindow.addEventListener('mousedown', () => {
             bringToFront(calcWindow);
@@ -185,7 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
         calcCloseBtn.addEventListener('click', () => {
             calcWindow.classList.remove('show');
             playCloseSound();
-            // Optional: Clear calculator on close
+            // Reset calculator on close
             if(calcDisplay) calcDisplay.innerText = '0';
         });
 
@@ -201,14 +198,33 @@ document.addEventListener('DOMContentLoaded', () => {
             playClickSound();
         });
         
+        // Initialize Drag
         makeDraggable(calcWindow);
     }
 
+    // Calculator Button Logic
     calcButtons.forEach(btn => {
         btn.addEventListener('click', () => {
-            playClickSound(); // Use your global sound
+            playClickSound(); 
             handleCalcInput(btn.innerText);
         });
+    });
+
+
+    // --- SYSTEM CONTROLS ---
+
+    // Mute Button
+    muteButton.addEventListener('click', () => {
+        isMuted = !isMuted;
+        if (isMuted) {
+            muteIcon.src = 'assets/sound-off.svg';
+            muteIcon.alt = 'Unmute';
+        } else {
+            muteIcon.src = 'assets/sound-on.svg';
+            muteIcon.alt = 'Mute';
+        }
+        clickSound.currentTime = 0;
+        clickSound.play();
     });
 
     // --- LAUNCHER LOGIC ---
@@ -246,22 +262,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Initialize Draggable Windows
+    // Reset text when the mouse leaves the list
+    if (launcherSidebar) {
+        launcherSidebar.addEventListener('mouseleave', () => {
+            showDetails('Select an app...');
+        });
+    }
+
+    // --- DRAGGABLE WINDOWS ---
     makeDraggable(terminalWindow);
     makeDraggable(homeWindow);
     makeDraggable(linksWindow);
     makeDraggable(projectWindow);
 
-    //Reset text when the mouse leaves the list
-    if (launcherSidebar) {
-    launcherSidebar.addEventListener('mouseleave', () => {
-        showDetails('Select an app...');
-    });
-    }
 
-    // --- Window Focus Logic (Content Only) ---
+    // --- CONTENT FOCUS LOGIC ---
+    // Clicking content brings window to front
     
-    // Terminal content click
     terminalWindow.addEventListener('click', (e) => {
         if (e.target.closest('.window-content')) {
             bringToFront(terminalWindow);
@@ -270,40 +287,51 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Home content click
     if(homeContent) {
         homeContent.addEventListener('mousedown', () => {
             bringToFront(homeWindow);
         });
     }
 
-    // Links content click
     if(linksContent) {
         linksContent.addEventListener('mousedown', () => {
             bringToFront(linksWindow);
         });
     }
 
-    // Project content click
     if(projectContent) {
         projectContent.addEventListener('mousedown', () => {
             bringToFront(projectWindow);
         });
     }
 
-    // Terminal Typing Logic
-    const welcomeMessage = document.createElement('p');
-    terminalContent.prepend(welcomeMessage);
-    typewrite(welcomeMessage, "Welcome to char@kali. Type 'help' for available commands.", () => {
-        terminalContent.scrollTop = terminalContent.scrollHeight;
-    });
 
+    // --- TERMINAL LOGIC (Fixed) ---
+    
+    // 1. Initial Welcome Message
+    // We check if a 'p' tag already exists to prevent duplicates
+    if (!terminalContent.querySelector('p')) {
+        const welcomeMessage = document.createElement('p');
+        terminalContent.prepend(welcomeMessage);
+        
+        // Use the typewrite function
+        typewrite(welcomeMessage, "Welcome to char@kali. Type 'help' for available commands.", () => {
+            // Only add an input line if one doesn't exist yet
+            if (!terminalContent.querySelector('.terminal-input')) {
+                addNewInputLine(terminalContent);
+            }
+            terminalContent.scrollTop = terminalContent.scrollHeight;
+        });
+    }
+
+    // 2. Key Listener
     terminalContent.addEventListener('keydown', async (e) => {
         if (e.key === 'Enter' && e.target.classList.contains('terminal-input')) {
             const inputElement = e.target;
             const command = inputElement.value.trim();
-
             const currentLine = inputElement.parentElement;
+
+            // Convert input line to static log
             const logLine = document.createElement('div');
             logLine.classList.add('log');
             logLine.innerHTML = `
@@ -312,10 +340,12 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             currentLine.replaceWith(logLine); 
 
+            // Process Command
             if (command) {
                 await processCommand(command, terminalContent);
             }
 
+            // Create new line (unless clear was used)
             if (command !== 'clear') {
                 addNewInputLine(terminalContent);
             }
@@ -324,28 +354,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- Global Sound Listener ---
+
+    // --- GLOBAL SOUND (Click anywhere) ---
     document.addEventListener('mousedown', (e) => {
+        // Ignore specific elements to avoid double sounds or unwanted sounds
         if (e.target.closest('#mute-button')) return;
         if (e.target.classList.contains('close')) return;
         if (e.target.closest('.title-bar')) return;
         if (e.target.closest('.window-content')) return;
         if (e.target.closest('.launcher')) return;
         
-        // Play sound for taskbar buttons
+        // Play sound for any other button (taskbar, etc)
         if (e.target.closest('button')) {
             playClickSound();
         }
     });
 
+    // Initialize Icons
     feather.replace();
 
 }); // End DOMContentLoaded
 
 
-// --- GLOBAL FUNCTIONS  ---
+// --- HELPER FUNCTIONS ---
 
-// Updates the text on the right side when hovering over launcher items
 function showDetails(text) {
     const preview = document.getElementById('preview-text');
     if (preview) {
@@ -353,14 +385,11 @@ function showDetails(text) {
     }
 }
 
-// Handles opening apps from the launcher
 function openApp(appName) {
     const launcher = document.querySelector('#launcher');
-    // Close the launcher
     launcher.classList.remove('show');
-    playClickSound(); // Play sound on app open
+    playClickSound();
 
-    // Logic to open specific windows
     if (appName === 'terminal') {
         const win = document.querySelector('#terminal-window');
         win.classList.add('show');
@@ -391,7 +420,6 @@ function openApp(appName) {
 function bringToFront(windowElement) {
     currentZIndex++;
     windowElement.style.zIndex = currentZIndex;
-    // Silent (sound handled by click listeners)
 }
 
 function addNewInputLine(container) {
@@ -399,10 +427,11 @@ function addNewInputLine(container) {
     line.classList.add('terminal-line');
     line.innerHTML = `
         <span class="prompt">izitchar@kali:~$</span>
-        <input type="text" class="terminal-input">
+        <input type="text" class="terminal-input" spellcheck="false">
     `;
     container.appendChild(line);
-    line.querySelector('.terminal-input').focus();
+    const input = line.querySelector('.terminal-input');
+    if(input) input.focus();
 }
 
 async function processCommand(command, container) {
@@ -448,7 +477,7 @@ Available commands:
 function typewrite(element, text, callback) {
     return new Promise((resolve) => {
         let i = 0;
-        const speed = 1;
+        const speed = 5; // Faster typing
         element.innerHTML = '';
         function type() {
             if (i < text.length) {
@@ -524,10 +553,8 @@ function makeDraggable(element) {
 
         const minX = 0;
         const maxX = viewportWidth - elemWidth;
-        
         const minY = 0; 
         newX = Math.max(minX, Math.min(newX, maxX));
-        
         newY = Math.max(minY, newY); 
 
         element.style.left = `${newX}px`;
@@ -544,8 +571,6 @@ function makeDraggable(element) {
             titleBar.style.cursor = 'grab';
         }
     });
-
-    titleBar.style.cursor = 'grab';
 }
 
 // Simple Calculator Logic
@@ -557,17 +582,13 @@ function handleCalcInput(value) {
         display.innerText = '0';
     } else if (value === '=') {
         try {
-            // Safety: Only allow numbers and math operators
             const safeExpression = currentText.replace(/[^0-9+\-*/.]/g, '');
-            // Evaluate the math
             display.innerText = eval(safeExpression); 
         } catch (e) {
             display.innerText = 'Error';
         }
     } else {
-        // If display is 0 or Error, replace it, otherwise append
         if (currentText === '0' || currentText === 'Error') {
-            // Don't replace 0 if the input is an operator (e.g. 0 + 5)
             if (['+', '-', '*', '/'].includes(value)) {
                 display.innerText = currentText + value;
             } else {

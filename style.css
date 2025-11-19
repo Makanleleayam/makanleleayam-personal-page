@@ -19,7 +19,7 @@ body {
 }
 
 input, textarea {
-    user-select: auto;
+    user-select: text !important;
 }
 
 /* --- Taskbar --- */
@@ -255,6 +255,7 @@ input, textarea {
     flex-grow: 1;
     outline: none;
     padding: 0;
+    caret-color: #EEE8D5;
 }
 
 #terminal-window .window-content::-webkit-scrollbar {
